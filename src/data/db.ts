@@ -6,7 +6,7 @@ type Guitar = {
   price: number;
 };
 
-export const db = [
+export const db: Guitar[] = [
   {
     id: 1,
     name: "Lukather",
