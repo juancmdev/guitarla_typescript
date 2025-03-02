@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import Guitar from "./components/Guitar";
-import Header from "./components/Header";
-import { db } from "./data/db";
+import { useState, useEffect, useMemo } from "react";
+import { db } from "../data/db";
 
-function App() {
+function useCart() {
   const initialCart = () => {
     const localStorageCart = localStorage.getItem("cart");
     return localStorageCart ? JSON.parse(localStorageCart) : [];
@@ -68,39 +66,24 @@ function App() {
     setCart([]);
   }
 
-  return (
-    <>
-      <Header
-        cart={cart}
-        removeFromCart={removeFromCart}
-        decreseQuantity={decreseQuantity}
-        increseQuantity={increseQuantity}
-        clearCart={clearCart}
-      />
-      <main className="container-xl mt-5">
-        <h2 className="text-center">Nuestra Colección</h2>
-
-        <div className="row mt-5">
-          {data.map((guitar) => (
-            <Guitar
-              key={guitar.id}
-              guitar={guitar}
-              setCart={setCart}
-              addToCart={addToCart}
-            />
-          ))}
-        </div>
-      </main>
-
-      <footer className="bg-dark mt-5 py-5">
-        <div className="container-xl">
-          <p className="text-white text-center fs-4 mt-4 m-md-0">
-            GuitarLA - Todos los derechos Reservados
-          </p>
-        </div>
-      </footer>
-    </>
+  //State derivado
+  const isEmpty = useMemo(() => cart.length === 0, [cart]);
+  const carTotal = useMemo(
+    () => cart.reduce((total, item) => total + item.quantity * item.price, 0),
+    [cart]
   );
+
+  return {
+    data,
+    cart,
+    addToCart,
+    removeFromCart,
+    decreseQuantity,
+    increseQuantity,
+    clearCart,
+    isEmpty,
+    carTotal,
+  };
 }
 
-export default App;
+export default useCart;
