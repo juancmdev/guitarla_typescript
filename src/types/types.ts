@@ -10,6 +10,8 @@ export type CarItem = Guitar & {
   quantity: number;
 };
 
+export type GuitarId = Pick<Guitar, "id">;
+
 //Utility Types // Pick selecciona algunos atributos y Omit los omite
 // export type CarItem = Pick<Guitar, "id" | "name" | "price"> & {
 //   quantity: number;
